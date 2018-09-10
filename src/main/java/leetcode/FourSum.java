@@ -84,14 +84,4 @@ public class FourSum {
 		}
 		return set.stream().map(four -> four.toList()).collect(Collectors.toList());
 	}
-
-	public static void main(String[] args) {
-		FourSum obj = new FourSum();
-		for (List<Integer> list : obj.fourSum(new int[] { 1, 0, -1, 0, -2, 2 }, 0)) {
-			for (Integer i : list) {
-				System.out.print(i + " ");
-			}
-			System.out.println();
-		}
-	}
 }

@@ -20,9 +20,4 @@ public class ThreeSumClosest {
 		return minSum;
 	}
 
-	public static void main(String[] args) {
-		ThreeSumClosest obj = new ThreeSumClosest();
-		System.out.println(obj.threeSumClosest(new int[] { 1, 1, 1, 0 }, -100));
-		System.out.println(obj.threeSumClosest(new int[] { 1, 1, -1, -1, 3 }, -1));
-	}
 }

@@ -38,12 +38,4 @@ public class ValidParentheses {
 
 	}
 
-	public static void main(String[] args) {
-		ValidParentheses obj = new ValidParentheses();
-		System.out.println(obj.isValid(""));
-		System.out.println(obj.isValid("()"));
-		System.out.println(obj.isValid("([{}])"));
-		System.out.println(obj.isValid("([)]"));
-		System.out.println(obj.isValid("]"));
-	}
 }

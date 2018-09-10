@@ -44,10 +44,4 @@ public class LetterCombinationsOfAPhoneNumber {
 		}
 	}
 
-	public static void main(String[] args) {
-		LetterCombinationsOfAPhoneNumber obj = new LetterCombinationsOfAPhoneNumber();
-		for (String str : obj.letterCombinations("23")) {
-			System.out.print(str + " ");
-		}
-	}
 }
