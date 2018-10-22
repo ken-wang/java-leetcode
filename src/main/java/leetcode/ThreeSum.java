@@ -2,108 +2,58 @@ package leetcode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class ThreeSum {
 
-	class Three {
-		int a;
-		int b;
-		int c;
+	private void twoSum(int[] nums, int left, int right, int target, List<List<Integer>> results) {
+		while (left < right) {
+			if (nums[left] + nums[right] == target) {
+				List<Integer> triplet = new ArrayList<>();
+				triplet.add(-target);
+				triplet.add(nums[left]);
+				triplet.add(nums[right]);
+				results.add(triplet);
 
-		Three(int a, int b, int c) {
-			this.a = a;
-			this.b = b;
-			this.c = c;
+				left++;
+				right--;
+
+				while (left < right && nums[left] == nums[left - 1]) {
+					left++;
+				}
+				while (left < right && nums[right] == nums[right + 1]) {
+					right--;
+				}
+			} else if (nums[left] + nums[right] < target) {
+				left++;
+			} else {
+				right--;
+			}
 		}
-
-		public List<Integer> toList() {
-			List<Integer> list = new ArrayList<>();
-			list.add(a);
-			list.add(b);
-			list.add(c);
-			return list;
-		}
-
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + a;
-			result = prime * result + b;
-			result = prime * result + c;
-			return result;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			Three other = (Three) obj;
-			if (a != other.a)
-				return false;
-			if (b != other.b)
-				return false;
-			if (c != other.c)
-				return false;
-			return true;
-		}
-
 	}
 
 	public List<List<Integer>> threeSum(int[] nums) {
-		Map<Integer, Integer> map = new HashMap<>();
-		Set<Three> set = new HashSet<>();
-		List<Integer> positives = new ArrayList<>();
-		List<Integer> negatives = new ArrayList<>();
+		List<List<Integer>> results = new ArrayList<>();
 
-		for (int i = 0; i < nums.length; i++) {
-			if (nums[i] >= 0) {
-				positives.add(nums[i]);
-			} else {
-				negatives.add(nums[i]);
-			}
-			int count = 0;
-			if (map.containsKey(nums[i])) {
-				count = map.get(nums[i]);
-			}
-			map.put(nums[i], ++count);
+		if (results == null || nums.length < 3) {
+			return results;
 		}
 
-		for (int i = 0; i < positives.size(); i++) {
-			for (int j = i + 1; j < positives.size(); j++) {
-				int value = positives.get(i) + positives.get(j);
-				if (map.containsKey(-value)) {
-					int[] three = new int[] { positives.get(i), positives.get(j), -value };
-					Arrays.sort(three);
-					set.add(new Three(three[0], three[1], three[2]));
-				}
+		Arrays.sort(nums);
+
+		for (int i = 0; i < nums.length - 2; i++) {
+			if (i > 0 && nums[i] == nums[i - 1]) {
+				continue;
 			}
-		}
-		for (int i = 0; i < negatives.size(); i++) {
-			for (int j = i + 1; j < negatives.size(); j++) {
-				int value = negatives.get(i) + negatives.get(j);
-				if (map.containsKey(-value)) {
-					int[] three = new int[] { negatives.get(i), negatives.get(j), -value };
-					Arrays.sort(three);
-					set.add(new Three(three[0], three[1], three[2]));
-				}
-			}
-		}
-		if (map.containsKey(0) && map.get(0) < 3) {
-			set.remove(new Three(0, 0, 0));
+
+			int left = i + 1;
+			int right = nums.length - 1;
+			int target = -nums[i];
+
+			twoSum(nums, left, right, target, results);
 		}
 
-		return set.stream().map(three -> three.toList()).collect(Collectors.toList());
+		return results;
 	}
 
 }

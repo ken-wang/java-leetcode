@@ -3,50 +3,38 @@ package leetcode;
 public class ZigZagConversion {
 
 	public String convert(String s, int numRows) {
-
-		String[][] zigZag = new String[numRows][s.length()];
-		if (numRows == 1) {
+		if (s == null || numRows <= 1) {
 			return s;
 		}
-
-		int x = 0;
-		boolean order = true;
-		for (int i = 0; i < s.length(); i++) {
-			char c = s.charAt(i);
-			int y = (i - x) / 2;
-			System.out.println(String.format("index:%d, order:%b, (%d, %d) = %s", i, order, x, y, Character.toString(c)));
-			zigZag[x][y] = Character.toString(c);
-
-			if (order) {
-				if (x >= numRows - 1) {
-					x = x - 1;
-				} else {
-					x++;
+		int len = s.length();
+		char[] chars = new char[len];
+		int totalSpace = numRows * 2 - 2;
+		int index = 0;
+		for (int step = 0; step < numRows; step++) {
+			int space1 = totalSpace - step * 2;
+			int space2 = step * 2;
+			int i = step;
+			do {
+				if (space1 > 0) {
+					chars[index++] = s.charAt(i);
+					i += space1;
+				}
+				if (space2 > 0 && i < len) {
+					chars[index++] = s.charAt(i);
+					i += space2;
 				}
 
-			} else {
-				x--;
-				if (x <= 0) {
-				}
-			}
-			if ((x % (numRows - 1) == 0)) {
-				order = !order;
-			}
+			} while (i < len);
 
 		}
 
-		StringBuilder builder = new StringBuilder();
+		return new String(chars);
+	}
 
-		for (int i = 0; i < zigZag.length; i++) {
-			for (int j = 0; j < zigZag[i].length; j++) {
-				if (zigZag[i][j] != null) {
-					builder.append(zigZag[i][j]);
-				}
-			}
-		}
-
-		return builder.toString();
-
+	public static void main(String[] args) {
+		ZigZagConversion obj = new ZigZagConversion();
+		System.out.println(obj.convert("PAYPALISHIRING", 3));
+		System.out.println(obj.convert("PAYPALISHIRING", 4));
 	}
 
 }

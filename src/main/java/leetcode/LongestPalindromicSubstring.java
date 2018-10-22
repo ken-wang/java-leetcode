@@ -2,34 +2,39 @@ package leetcode;
 
 public class LongestPalindromicSubstring {
 
+	private int minIndex, maxIndex, max;
+	private char[] chars;
+
 	public String longestPalindrome(String s) {
 
-		String longest = "";
-		for (int i = 0; i < s.length(); i++) {
-
-			for (int index = s.length(); index > i; index--) {
-				String sub = s.substring(i, index);
-				if (longest.length() > sub.length()) {
-					break;
-				}
-				if (isPalindromic(sub)) {
-					longest = sub;
-					break;
-				}
-			}
+		this.chars = s.toCharArray();
+		for (int i = 0; i < this.chars.length; i++) {
+			calculate(i, i);
+			calculate(i, i + 1);
 		}
-		return longest;
+		return s.substring(this.minIndex, this.maxIndex);
+	}
+
+	private void calculate(int start, int end) {
+
+		while (start >= 0 && end < chars.length && chars[start] == chars[end]) {
+			start--;
+			end++;
+		}
+
+		if (this.max <= end - start - 1) {
+			this.max = end - start - 1;
+			this.minIndex = start + 1;
+			this.maxIndex = end;
+		}
 
 	}
 
-	private boolean isPalindromic(String s) {
-		for (int i = 0; i < s.length(); i++) {
-			if (s.charAt(i) != s.charAt(s.length() - i - 1)) {
-				return false;
-			}
-		}
-		return true;
-
+	public static void main(String[] args) {
+		LongestPalindromicSubstring obj = new LongestPalindromicSubstring();
+		System.out.println(obj.longestPalindrome("babad"));
+		System.out.println(obj.longestPalindrome(
+				"dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"));
 	}
 
 }
