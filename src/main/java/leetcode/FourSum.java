@@ -2,86 +2,66 @@ package leetcode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class FourSum {
 
-	class Four {
-		int a;
-		int b;
-		int c;
-		int d;
-
-		Four(int a, int b, int c, int d) {
-			this.a = a;
-			this.b = b;
-			this.c = c;
-			this.d = d;
-		}
-
-		public List<Integer> toList() {
-			List<Integer> list = new ArrayList<>();
-			list.add(a);
-			list.add(b);
-			list.add(c);
-			list.add(d);
-			return list;
-		}
-
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + a;
-			result = prime * result + b;
-			result = prime * result + c;
-			result = prime * result + d;
-			return result;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			Four other = (Four) obj;
-			if (a != other.a)
-				return false;
-			if (b != other.b)
-				return false;
-			if (c != other.c)
-				return false;
-			if (d != other.d)
-				return false;
-			return true;
-		}
-
-	}
-
 	public List<List<Integer>> fourSum(int[] nums, int target) {
+		List<List<Integer>> ans = new ArrayList<>();
 
-		Set<Four> set = new HashSet<>();
-		for (int i = 0; i < nums.length; i++) {
-			for (int j = i + 1; j < nums.length; j++) {
-				for (int k = j + 1; k < nums.length; k++) {
-					for (int l = k + 1; l < nums.length; l++) {
-						int value = nums[i] + nums[j] + nums[k] + nums[l];
-						if (value == target) {
-							int[] four = new int[] { nums[i], nums[j], nums[k], nums[l] };
-							Arrays.sort(four);
-							set.add(new Four(four[0], four[1], four[2], four[3]));
+		if (nums == null)
+			return ans;
+		int len = nums.length;
+		if (len < 4)
+			return ans;
+		if (len == 4) {
+			if (nums[0] + nums[1] + nums[2] + nums[3] == target) {
+				List<Integer> list = new ArrayList<>();
+				list.add(nums[0]);
+				list.add(nums[1]);
+				list.add(nums[2]);
+				list.add(nums[3]);
+				ans.add(list);
+			}
+			return ans;
+		}
+
+		Arrays.sort(nums);
+
+		for (int i = 0; i < nums.length - 3; i++) {
+			if (nums[i] + nums[i + 1] + nums[i + 2] + nums[i + 3] > target)
+				break;
+			if (nums[i] + nums[nums.length - 1] + nums[nums.length - 2] + nums[nums.length - 3] < target)
+				continue;
+			if (i > 0 && nums[i] == nums[i - 1])
+				continue;
+			for (int j = i + 1; j < nums.length - 2; j++) {
+				if (nums[i] + nums[j] + nums[j + 1] + nums[j + 2] > target)
+					break;
+				if (nums[i] + nums[j] + nums[nums.length - 2] + nums[nums.length - 1] < target)
+					continue;
+				if (j > i + 1 && nums[j] == nums[j - 1])
+					continue;
+				int left = j + 1, right = nums.length - 1;
+				while (left < right) {
+					if (nums[i] + nums[j] + nums[left] + nums[right] > target) {
+						right--;
+					} else if (nums[i] + nums[j] + nums[left] + nums[right] < target) {
+						left++;
+					} else {
+						ans.add(Arrays.asList(nums[i], nums[j], nums[left], nums[right]));
+						while (left < right && nums[left] == nums[left + 1]) {
+							left++;
 						}
+						while (left < right && nums[right] == nums[right - 1]) {
+							right--;
+						}
+						left++;
+						right--;
 					}
 				}
-
 			}
 		}
-		return set.stream().map(four -> four.toList()).collect(Collectors.toList());
+		return ans;
 	}
 }
